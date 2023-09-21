@@ -8,7 +8,7 @@ export default function Home() {
 
   async function handleAddTask() {
     try {
-      const response = await fetch("http://localhost:3334/tasks", {
+      await fetch("http://localhost:3334/tasks", {
         method: "POST",
         body: JSON.stringify({
           title: input,
@@ -19,9 +19,7 @@ export default function Home() {
         },
       });
 
-      const data: TaskType = await response.json();
-
-      setTasks([...tasks, data]);
+      await getTasks();
       setInput("");
     } catch (error) {
       console.log(error);
@@ -30,14 +28,10 @@ export default function Home() {
 
   async function handleDelete(task: TaskType) {
     try {
-      const response = await fetch(`http://localhost:3334/tasks/${task.id}`, {
+      await fetch(`http://localhost:3334/tasks/${task.id}`, {
         method: "DELETE",
       });
-
-      await response.json();
-
-      const filteredTasks = tasks.filter((t) => t.id !== task.id);
-      setTasks(filteredTasks);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +39,7 @@ export default function Home() {
 
   async function handleChangeTaskStatus(task: TaskType) {
     try {
-      const response = await fetch(`http://localhost:3334/tasks/${task.id}`, {
+      await fetch(`http://localhost:3334/tasks/${task.id}`, {
         method: "PUT",
         body: JSON.stringify({
           ...task,
@@ -55,25 +49,20 @@ export default function Home() {
           "Content-Type": "Application/json",
         },
       });
-
-      const data: TaskType = await response.json();
-
-      const filteredTasks = tasks.filter((t) => t.id !== task.id);
-      filteredTasks.push(data);
-
-      setTasks(filteredTasks);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("http://localhost:3334/tasks");
-      const data: TaskType[] = await response.json();
+  async function getTasks() {
+    const response = await fetch("http://localhost:3334/tasks");
+    const data: TaskType[] = await response.json();
+    setTasks(data);
+  }
 
-      setTasks(data);
-    })();
+  useEffect(() => {
+    getTasks();
   }, []);
 
   return (

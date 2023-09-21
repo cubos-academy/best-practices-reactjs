@@ -9,6 +9,11 @@
       "title": "Estudar NOdeJS",
       "status": "pending",
       "id": 2
+    },
+    {
+      "title": "Aprender Next.JS",
+      "status": "pending",
+      "id": 3
     }
   ]
 }
