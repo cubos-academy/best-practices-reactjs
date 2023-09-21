@@ -8,7 +8,7 @@ export default function Home() {
 
   async function handleAddTask() {
     try {
-      await fetch("http://localhost:3334/tasks", {
+      const response = await fetch("http://localhost:3334/tasks", {
         method: "POST",
         body: JSON.stringify({
           title: input,
@@ -19,7 +19,9 @@ export default function Home() {
         },
       });
 
-      await getTasks();
+      const data: TaskType = await response.json();
+
+      setTasks([...tasks, data]);
       setInput("");
     } catch (error) {
       console.log(error);
@@ -28,10 +30,14 @@ export default function Home() {
 
   async function handleDelete(task: TaskType) {
     try {
-      await fetch(`http://localhost:3334/tasks/${task.id}`, {
+      const response = await fetch(`http://localhost:3334/tasks/${task.id}`, {
         method: "DELETE",
       });
-      await getTasks();
+
+      await response.json();
+
+      const filteredTasks = tasks.filter((t) => t.id !== task.id);
+      setTasks(filteredTasks);
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +45,7 @@ export default function Home() {
 
   async function handleChangeTaskStatus(task: TaskType) {
     try {
-      await fetch(`http://localhost:3334/tasks/${task.id}`, {
+      const response = await fetch(`http://localhost:3334/tasks/${task.id}`, {
         method: "PUT",
         body: JSON.stringify({
           ...task,
@@ -49,21 +55,25 @@ export default function Home() {
           "Content-Type": "Application/json",
         },
       });
-      await getTasks();
+
+      const data: TaskType = await response.json();
+
+      const filteredTasks = tasks.filter((t) => t.id !== task.id);
+      filteredTasks.push(data);
+
+      setTasks(filteredTasks);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function getTasks() {
-    const response = await fetch("http://localhost:3334/tasks");
-    const data: TaskType[] = await response.json();
-
-    setTasks(data);
-  }
-
   useEffect(() => {
-    getTasks();
+    (async () => {
+      const response = await fetch("http://localhost:3334/tasks");
+      const data: TaskType[] = await response.json();
+
+      setTasks(data);
+    })();
   }, []);
 
   return (

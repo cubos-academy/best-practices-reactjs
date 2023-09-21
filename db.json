@@ -4,6 +4,11 @@
       "title": "Estudar ReactJS",
       "status": "done",
       "id": 1
+    },
+    {
+      "title": "Estudar NOdeJS",
+      "status": "pending",
+      "id": 2
     }
   ]
 }
