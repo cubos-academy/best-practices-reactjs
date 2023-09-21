@@ -1,19 +1,19 @@
 {
   "tasks": [
     {
-      "title": "Estudar ReactJS",
+      "title": "Estudar NodeJS",
       "status": "done",
-      "id": 1
-    },
-    {
-      "title": "Estudar NOdeJS",
-      "status": "pending",
       "id": 2
     },
     {
-      "title": "Aprender Next.JS",
-      "status": "pending",
+      "title": "Estudar NExtJS",
+      "status": "done",
       "id": 3
+    },
+    {
+      "title": "Estudar HTML",
+      "status": "done",
+      "id": 4
     }
   ]
 }
