@@ -1,19 +1,9 @@
 {
   "tasks": [
     {
-      "title": "Estudar NodeJS",
-      "status": "done",
-      "id": 2
-    },
-    {
       "title": "Estudar NExtJS",
       "status": "done",
       "id": 3
-    },
-    {
-      "title": "Estudar HTML",
-      "status": "done",
-      "id": 4
     }
   ]
 }

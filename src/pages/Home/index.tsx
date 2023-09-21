@@ -8,7 +8,7 @@ export default function Home() {
 
   async function handleAddTask() {
     try {
-      const response = await fetch("http://localhost:3334/tasks", {
+      await fetch("http://localhost:3334/tasks", {
         method: "POST",
         body: JSON.stringify({
           title: input,
@@ -19,10 +19,7 @@ export default function Home() {
         },
       });
 
-      const data: TaskType = await response.json();
-
-      setTasks([...tasks, data]);
-
+      await getTasks();
       setInput("");
     } catch (error) {
       console.log(error);
@@ -34,10 +31,7 @@ export default function Home() {
       await fetch(`http://localhost:3334/tasks/${task.id}`, {
         method: "DELETE",
       });
-
-      const filteredTasks = tasks.filter((t) => t.id !== task.id);
-
-      setTasks(filteredTasks);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
@@ -55,27 +49,20 @@ export default function Home() {
           "Content-Type": "Application/json",
         },
       });
-
-      const localTasks = [...tasks];
-
-      const currenTask = localTasks.find((t) => t.id === task.id);
-
-      if (!currenTask) throw new Error("Falha ao atualizar a task!");
-
-      currenTask!.status = currenTask?.status === "done" ? "pending" : "done";
-
-      setTasks(localTasks);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
   }
 
+  async function getTasks() {
+    const response = await fetch("http://localhost:3334/tasks");
+    const data: TaskType[] = await response.json();
+    setTasks(data);
+  }
+
   useEffect(() => {
-    (async () => {
-      const response = await fetch("http://localhost:3334/tasks");
-      const data: TaskType[] = await response.json();
-      setTasks(data);
-    })();
+    getTasks();
   }, []);
 
   return (
